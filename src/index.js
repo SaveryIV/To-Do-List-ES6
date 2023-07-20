@@ -1,6 +1,4 @@
-import '../src/style.css';
-import { ToDo } from '../modules/ToDoLogic';
-
+import { ToDo } from '../modules/ToDoLogic.js';
 
 const toDo = new ToDo();
 
