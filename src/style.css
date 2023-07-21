@@ -29,6 +29,8 @@ body {
   margin-top: 10px;
   margin-left: 5px;
   margin-right: 5px;
+  border-bottom: 2px solid silver;
+  padding-bottom: 10px;
 }
 
 .title-container img {
@@ -65,7 +67,7 @@ body {
 }
 
 .list-tasks li {
-  background-color: #e7cc31;
+  background-color: #fff;
   border-bottom: 2px solid black;
   height: 2rem;
   display: flex;
@@ -81,5 +83,5 @@ body {
   border: 0;
   height: 40px;
   outline: none;
-  background-color: #51c2df;
+  background-color: #9e9e9e;
 }
