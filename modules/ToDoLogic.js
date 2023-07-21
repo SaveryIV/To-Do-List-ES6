@@ -35,6 +35,7 @@ export class ToDo {
       const task = new Task($input.value);
       if (this.list.length <= 0) {
         this.list.push(task);
+        this.saveLocalStorage();
       } else {
         this.counter += this.counter + 1;
         task.index = this.counter;
@@ -42,8 +43,8 @@ export class ToDo {
       }
       $listTasks.innerHTML += `
             <li class="task"><div><input type="checkbox" name="" id="">
-            <span>${task.description}</span>
-            </div> <img class="task-img" src="${dots}" alt="options">
+            <input type="text" class="inp" readOnly="true" value="${task.description}">
+            </div> <img class="task-img" src="${dots}" alt="options" name="${task.description}">
             </li>
             `;
     }
@@ -51,24 +52,18 @@ export class ToDo {
   }
 
   eliminateTask = () => {
-    this.updateIndex();
-    const $taskList = document.querySelectorAll('.list-tasks li');
-    $taskList.forEach((li) => {
-      const $taskImg = li.querySelector('.task-img');
-      $taskImg.addEventListener('click', () => {
-        const currentImage = $taskImg.src;
-        if (currentImage === dots) {
-          $taskImg.src = trash;
-        } else {
-          const indexToRemove = parseInt($taskImg.dataset.index, 10);
-          this.list = this.list.filter((task) => task.index !== indexToRemove);
-          li.remove();
-          const remainingTasks = document.querySelectorAll('.list-tasks li .task-img');
-          remainingTasks.forEach((img, index) => {
-            img.dataset.index = index + 1;
-          });
+    const $taskImg = document.querySelectorAll('.task-img');
+    $taskImg.forEach((img) => {
+      img.addEventListener('click', () => {
+        img.src = trash;
+        console.log(this.list);
+        img.addEventListener('click', () => {
+          this.list = this.list.filter((task) => task.description !== img.name);
           this.saveLocalStorage(this.list);
-        }
+          img.parentElement.remove();
+          this.updateIndex();
+          console.log(this.list);
+        });
       });
     });
   }
@@ -89,11 +84,12 @@ export class ToDo {
       this.list = listSaved;
       const listHTML = this.list.map((task) => `
       <li class="task"><div><input type="checkbox" name="" id="">
-            <span>${task.description}</span>
-            </div> <img class="task-img" src="${dots}" alt="options">
+            <input type="text" class="inp" readOnly="true" value="${task.description}">
+            </div> <img class="task-img" src="${dots}" name="${task.description}" alt="options">
             </li>
       `).join('');
       $listTasks.innerHTML = listHTML;
+      this.eliminateTask();
     }
   }
 
@@ -101,6 +97,8 @@ export class ToDo {
     $input.addEventListener('keydown', (e) => {
       if ($input.value !== '') {
         this.handleKeyPress(e);
+        this.updateIndex();
+        this.saveLocalStorage(this.list);
       }
       if (e.key === 'Enter') {
         $input.value = '';
@@ -113,8 +111,29 @@ export class ToDo {
       const $task = document.querySelectorAll('.task');
       $task.forEach((task) => task.remove());
       this.list = [];
+      this.saveLocalStorage(this.list);
     });
   }
+
+  /* changeDescription = () => {
+    const $task = document.querySelectorAll('.task');
+    $task.forEach((task) => {
+      task.addEventListener('click', () => {
+        const $inp = task.querySelector('.inp');
+        /* $inp.classList.remove('');
+        console.log($inp);
+        const description = $inp.textContent;
+        $inp.ariaReadOnly = false;
+        const $taskImg = document.querySelectorAll('.task-img');
+        $taskImg.forEach((img) => {
+          if (img.name === description) {
+            img.name = $inp.textContent;
+          }
+        });
+      });
+    });
+    this.saveLocalStorage();
+  } */
 
   clearAllButton = () => {
     const $clearButton = document.getElementById('clear-button');
