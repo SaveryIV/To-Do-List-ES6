@@ -1,0 +1,87 @@
+@font-face {
+  font-family: 'Lato';
+  src: url('../src/fonts/Lato-Black.ttf') format('ttf');
+  src: url('../src/fonts/Lato-BlackItalic.ttf') format('ttf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+* {
+  font-family: 'Lato', sans-serif;
+}
+
+h1 {
+  margin: 0;
+  font-size: larger;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
+  border-bottom: 2px solid silver;
+  padding-bottom: 10px;
+}
+
+.title-container img {
+  width: 20px;
+}
+
+.task-img {
+  width: 20px;
+}
+
+.container-toDo {
+  width: 50vw;
+  min-height: 60vh;
+  max-width: 80vw;
+  display: flex;
+  box-shadow: 3px 5px 30px 2px;
+  flex-direction: column;
+}
+
+.input {
+  height: 25px;
+  border-bottom: 2px solid black;
+  outline: none;
+  border-left: none;
+  border-top: none;
+  border-right: none;
+}
+
+.list-tasks {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.list-tasks li {
+  background-color: #fff;
+  border-bottom: 2px solid black;
+  height: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-tasks li span {
+  padding-left: 10px;
+}
+
+.container-toDo button {
+  border: 0;
+  height: 40px;
+  outline: none;
+  background-color: #9e9e9e;
+}
