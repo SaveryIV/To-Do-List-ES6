@@ -26,21 +26,19 @@ class Task {
 export class ToDo {
   constructor() {
     this.list = [];
-    this.counter = 2;
+    this.counter = 1;
   }
 
   handleKeyPress = (event) => {
     const keyPressed = event.key;
-
     if (keyPressed === 'Enter') {
       const task = new Task($input.value);
       if (this.list.length <= 0) {
         this.list.push(task);
       } else {
+        this.counter += this.counter + 1;
         task.index = this.counter;
         this.list.push(task);
-        /* console.log(this.list); */
-        this.counter += 1;
       }
       $listTasks.innerHTML += `
             <li class="task"><div><input type="checkbox" name="" id="">
@@ -49,41 +47,54 @@ export class ToDo {
             </li>
             `;
     }
-
     this.eliminateTask();
   }
 
   eliminateTask = () => {
-    const $taskImg = document.querySelectorAll('.task-img');
-    $taskImg.forEach((img) => {
-      img.addEventListener('click', () => {
-        const currentImage = img.src;
+    this.updateIndex();
+    const $taskList = document.querySelectorAll('.list-tasks li');
+    $taskList.forEach((li) => {
+      const $taskImg = li.querySelector('.task-img');
+      $taskImg.addEventListener('click', () => {
+        const currentImage = $taskImg.src;
         if (currentImage === dots) {
-          img.src = trash;
+          $taskImg.src = trash;
         } else {
-          /* const index = Array.from($taskImg).indexOf(img) + 1;
-          this.list.forEach((task, taskIndex) => {
-            // actualizar valor de task.index
-            if (task.index === index) {
-              this.list.splice(taskIndex, 1);
-              img.parentElement.remove();
-              console.log(this.list);
-            }
-          }); */
-          const indexToRemove = Array.from($taskImg).indexOf(img) + 1;
+          const indexToRemove = parseInt($taskImg.dataset.index, 10);
           this.list = this.list.filter((task) => task.index !== indexToRemove);
-          this.list.forEach((task, newIndex) => {
-            task.index = newIndex + 1;
+          li.remove();
+          const remainingTasks = document.querySelectorAll('.list-tasks li .task-img');
+          remainingTasks.forEach((img, index) => {
+            img.dataset.index = index + 1;
           });
-          img.parentElement.remove();
-          console.log(this.list);
+          this.saveLocalStorage(this.list);
         }
       });
     });
   }
 
   updateIndex = () => {
-    /*  */
+    this.list.forEach((task, index) => {
+      task.index = index + 1;
+    });
+  }
+
+  saveLocalStorage = (list) => {
+    localStorage.setItem('list', JSON.stringify(list));
+  }
+
+  showLocal = () => {
+    const listSaved = JSON.parse(localStorage.getItem('list'));
+    if (listSaved) {
+      this.list = listSaved;
+      const listHTML = this.list.map((task) => `
+      <li class="task"><div><input type="checkbox" name="" id="">
+            <span>${task.description}</span>
+            </div> <img class="task-img" src="${dots}" alt="options">
+            </li>
+      `).join('');
+      $listTasks.innerHTML = listHTML;
+    }
   }
 
   executeInputFunctioning = () => {
