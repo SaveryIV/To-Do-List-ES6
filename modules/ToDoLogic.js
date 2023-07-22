@@ -56,13 +56,11 @@ export class ToDo {
     $taskImg.forEach((img) => {
       img.addEventListener('click', () => {
         img.src = trash;
-        console.log(this.list);
         img.addEventListener('click', () => {
           this.list = this.list.filter((task) => task.description !== img.name);
           this.saveLocalStorage(this.list);
           img.parentElement.remove();
           this.updateIndex();
-          console.log(this.list);
         });
       });
     });
