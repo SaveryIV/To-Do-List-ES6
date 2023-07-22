@@ -149,10 +149,15 @@ export class ToDo {
         if (task.completed === true) {
           $taskImg.forEach((img) => {
             if (img.name === task.description) {
-              console.log(this.list);
               img.parentElement.remove();
             }
           });
+        }
+      });
+      const $checkboxes = document.querySelectorAll('#check');
+      $checkboxes.forEach((check) => {
+        if (check.checked === true) {
+          check.parentElement.parentElement.remove();
         }
       });
     });
