@@ -6,7 +6,7 @@ import reset from '../src/images/reset-icon.png';
 import trash from '../src/images/trash-can.png';
 import { Checkbox } from './checkbox.js';
 
-const $input = document.querySelector('.input');
+export const $input = document.querySelector('.input');
 const $listTasks = document.querySelector('.list-tasks');
 const $titleContainer = document.querySelector('.title-container');
 
