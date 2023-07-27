@@ -1,8 +1,14 @@
 import { ToDo } from '../modules/ToDoLogic.js';
 
 const todoList = new ToDo();
-todoList.showLocal();
+if (JSON.parse(localStorage.getItem('list'))) {
+  todoList.showLocal();
+}
 todoList.executeInputFunctioning();
 todoList.resetTasks();
-/* todoList.clearAllButton(); */
-/* todoList.eliminateTask(); */
+
+document.addEventListener('click', () => {
+  todoList.changeState();
+  todoList.clearAllButton();
+  todoList.eliminateTask();
+});

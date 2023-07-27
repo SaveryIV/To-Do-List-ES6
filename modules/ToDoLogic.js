@@ -4,6 +4,7 @@ import '../src/style.css';
 import dots from '../src/images/dots-icon.png';
 import reset from '../src/images/reset-icon.png';
 import trash from '../src/images/trash-can.png';
+import { Checkbox } from './checkbox.js';
 
 const $input = document.querySelector('.input');
 const $listTasks = document.querySelector('.list-tasks');
@@ -42,7 +43,7 @@ export class ToDo {
         this.list.push(task);
       }
       $listTasks.innerHTML += `
-            <li class="task"><div><input type="checkbox" name="" id="">
+            <li class="task"><div><input type="checkbox" name="" id="check">
             <input type="text" class="inp" readOnly="true" value="${task.description}">
             </div> <img class="task-img" src="${dots}" alt="options" name="${task.description}">
             </li>
@@ -81,7 +82,7 @@ export class ToDo {
     if (listSaved) {
       this.list = listSaved;
       const listHTML = this.list.map((task) => `
-      <li class="task"><div><input type="checkbox" name="" id="">
+      <li class="task"><div><input type="checkbox" name="" id="check">
             <input type="text" class="inp" readOnly="true" value="${task.description}">
             </div> <img class="task-img" src="${dots}" name="${task.description}" alt="options">
             </li>
@@ -113,32 +114,52 @@ export class ToDo {
     });
   }
 
-  /* changeDescription = () => {
-    const $task = document.querySelectorAll('.task');
-    $task.forEach((task) => {
-      task.addEventListener('click', () => {
-        const $inp = task.querySelector('.inp');
-        /* $inp.classList.remove('');
-        console.log($inp);
-        const description = $inp.textContent;
-        $inp.ariaReadOnly = false;
-        const $taskImg = document.querySelectorAll('.task-img');
-        $taskImg.forEach((img) => {
-          if (img.name === description) {
-            img.name = $inp.textContent;
-          }
-        });
+  changeState = () => {
+    const quiz = new Checkbox();
+    const $checkboxes = document.querySelectorAll('#check');
+    $checkboxes.forEach((checkbox) => {
+      checkbox.addEventListener('change', () => {
+        const description = checkbox.parentElement.nextSibling.nextSibling;
+        const task = this.list.find((task) => task.description === description.name);
+        if (task) {
+          task.completed = checkbox.checked;
+          quiz.saveTasks(this.list);
+          this.handlerClearAll();
+        }
       });
     });
-    this.saveLocalStorage();
-  } */
+  }
+
+  handlerClearAll = () => {
+    const $clearAll = document.querySelector('#clear-button');
+    $clearAll.addEventListener('click', () => {
+      this.list = this.list.filter((task) => !task.completed);
+      /* console.log(this.list); */
+      this.updateIndex();
+      this.saveLocalStorage(this.list);
+    });
+  }
 
   clearAllButton = () => {
     const $clearButton = document.getElementById('clear-button');
+    const $taskImg = document.querySelectorAll('.task-img');
+    const list = JSON.parse(localStorage.getItem('list'));
     $clearButton.addEventListener('click', () => {
-      const $task = document.querySelectorAll('.task');
-      $task.forEach((task) => task.remove());
-      this.list = [];
+      list.forEach((task) => {
+        if (task.completed === true) {
+          $taskImg.forEach((img) => {
+            if (img.name === task.description) {
+              img.parentElement.remove();
+            }
+          });
+        }
+      });
+      const $checkboxes = document.querySelectorAll('#check');
+      $checkboxes.forEach((check) => {
+        if (check.checked === true) {
+          check.parentElement.parentElement.remove();
+        }
+      });
     });
   }
 }
