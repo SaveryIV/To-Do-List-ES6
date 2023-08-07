@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest --watch",
     "start": "webpack serve --open",
     "build": "webpack"
   },
@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/SaveryIV/To-Do-List-ES6#readme",
   "devDependencies": {
+    "@babel/plugin-transform-modules-commonjs": "^7.22.5",
+    "@babel/preset-env": "^7.22.9",
     "babel-eslint": "^10.1.0",
     "css-loader": "^6.8.1",
     "eslint": "^7.32.0",
@@ -27,6 +29,9 @@
     "eslint-plugin-import": "^2.27.5",
     "hint": "^7.1.10",
     "html-webpack-plugin": "^5.5.3",
+    "jest": "^29.6.1",
+    "jest-environment-jsdom": "^29.6.1",
+    "jsdom": "^22.1.0",
     "style-loader": "^3.3.3",
     "stylelint": "^13.13.1",
     "stylelint-config-standard": "^21.0.0",
@@ -35,5 +40,8 @@
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "jsdom-global": "^3.0.2"
   }
 }
